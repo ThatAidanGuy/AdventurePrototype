@@ -1,4 +1,4 @@
-class Demo1 extends AdventureScene {
+/*class Demo1 extends AdventureScene {
     constructor() {
         super("demo1", "First Room");
     }
@@ -129,3 +129,181 @@ const game = new Phaser.Game({
     title: "Adventure Game",
 });
 
+*/
+
+class Entrance extends AdventureScene {
+    constructor() {
+        super('entrance', 'Entrance');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('rubble', 'assets/rubble.png');
+    }
+
+    onEnter() {
+        
+    }
+
+
+}
+
+class LivingRoom extends AdventureScene {
+    constructor() {
+        super('livingRoom', 'Living Room');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('dog', 'assets/dog.png');
+        this.load.image('tv', 'assets/tv.png');
+    }
+
+    onEnter() {
+
+    }
+
+}
+
+class Kitchen extends AdventureScene {
+    constructor() {
+        super('kitchen', 'Kitchen');
+    }
+
+    preload() {
+        this.load.image('door','assets/door.png');
+        this.load.image('stove', 'assets/stove.png');
+        this.load.image('fire', 'assets/fire.png');
+    }
+
+    onEnter() {
+        
+    }
+
+
+}
+
+class Bedroom extends AdventureScene {
+    constructor() {
+        super('bedroom', 'Bedroom');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('bed', 'assets/bed.png');
+        this.load.image('woman', 'assets/woman.png');
+        this.load.image('beam', 'assets/beam.png');
+        this.load.image('extinguisher', 'assets/extinguisher.png');
+    }
+
+    onEnter() {
+        
+    }
+
+    
+}
+
+class Bathroom extends AdventureScene {
+    constructor() {
+        super('bathroom', 'Bathroom');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('toilet', 'assets/toilet.png');
+        this.load.image('man', 'assets/man.png');
+        this.load.image('stand', 'assets/stand.png');
+        this.load.image('firstAid', 'assets/firstAid.png');
+        this.load.image('water', 'assets/water.png');
+        this.load.image('lock', 'assets/lock.png');
+    }
+
+    onEnter() {
+    }
+
+    
+}
+
+class Hallway extends AdventureScene {
+    constructor() {
+        super('hallway', 'Hallway');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('rubble', 'assets/rubble.png');
+        this.load.image('lock', 'assets/lock.png');
+        this.load.image('fire', 'assets/fire.png');
+        this.load.image('occupied', 'assets/occupied.png');
+        this.load.image('bark', 'assets/bark.png');
+        this.load.image('dotDotDot', 'assets/dotDotDot.png');
+    }
+
+    onEnter() {
+        
+    }
+
+    
+}
+
+class Exit extends AdventureScene {
+    constructor() {
+        super('exit', 'Exit');
+    }
+
+    preload() {
+        this.load.image('door', 'assets/door.png');
+        this.load.image('cloud', 'assets/cloud.png');
+        this.load.image('flyer', 'assets/flyer2.gif');
+    }
+
+    onEnter() {
+        
+    }
+
+    
+}
+
+class Intro extends Phaser.Scene {
+    constructor(){
+        super('intro');
+    }
+
+    preload() {
+        this.load.image('siren', 'assets/siren.png');
+        this.load.image('house', 'assets/house.png');
+        this.load.image('go', 'assets/go.png');
+    }
+
+    create() {
+
+    }
+
+}
+
+class Ending extends Phaser.Scene {
+    constructor(){
+        super('ending');
+    }
+
+    preload() {
+        this.load.image('ghostbusters', 'assets/ghostbusters-ending-e.png');
+        this.load.image('button', 'assets/button.png');
+    }
+
+    create() {
+
+    }
+
+}
+
+const game = new Phaser.Game({
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 1920,
+        height: 1080
+    },
+    scene: [],
+    title: "Adventure Game",
+});
