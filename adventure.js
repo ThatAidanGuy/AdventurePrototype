@@ -16,7 +16,8 @@ class AdventureScene extends Phaser.Scene {
         this.h = this.game.config.height;
         this.s = this.game.config.width * 0.01;
 
-        this.cameras.main.setBackgroundColor('#444');
+        //background color edited by Aidan
+        this.cameras.main.setBackgroundColor('#F5F5DC');
         this.cameras.main.fadeIn(this.transitionDuration, 0, 0, 0);
 
         this.add.rectangle(this.w * 0.75, 0, this.w * 0.25, this.h).setOrigin(0, 0).setFillStyle(0);
@@ -62,6 +63,9 @@ class AdventureScene extends Phaser.Scene {
             duration: 4 * this.transitionDuration
         });
     }
+
+    //TODO: make ShowMessage variant for text appearing
+    //at certain coordinates when images are hovered over
 
     updateInventory() {
         if (this.inventory.length > 0) {
