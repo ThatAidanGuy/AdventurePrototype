@@ -167,18 +167,21 @@ class Entrance extends AdventureScene {
         let rubble = this.add.image(1000,600,'rubble');
         rubble.setScale(0.9);
 
-        if (this.rubbleCleared == true) {
+        if (this.hasItem('Cleared Rubble!')) {
             rubble.x = 2000;
             rubble.y = 2000;
         }
 
         //scene connections
         doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
-        if (this.rubbleCleared == true) {
+        if (this.hasItem('Cleared Rubble!')) {
             doorHal.on('pointerdown', () => this.gotoScene('hallway'));
         } else {
             doorHal.on('pointerdown', () => this.showMessage("The door to the hallway is blocked!\n\nGet to the other side and clear the rubble first."));
-        }        
+        }
+
+        //area message
+        this.showMessage("This is the entrance of the collapsed house.\n\nThe report said there'd be a man, woman and dog trapped inside.")
     }
 
 
@@ -242,11 +245,33 @@ class LivingRoom extends AdventureScene {
         dogLabel.setAlpha(0);
         dog.on('pointerover', () => this.showAlpha(dogLabel));
 
+        if(this.hasItem('Rescued Dog!')) {
+            dog.x = 2000;
+            dog.y = 2000;
+        }
+
         //scene connections
 
         doorEnt.on('pointerdown', () => this.gotoScene('entrance'));
         doorHal.on('pointerdown', () => this.gotoScene('hallway'));
         doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
+
+        //object interactions
+        dog.on('pointerdown', () => {
+            this.tweens.add({
+                targets: dog,
+                alpha: {from: 1, to: 0},
+                duration: 1000
+            })
+            this.gainItem('Rescued Dog!');
+        })
+
+        //area message
+        if (this.hasItem('Rescued Dog!')) {
+            this.showMessage("You've saved everybody here.");
+        } else {
+            this.showMessage("There's a dog in the living room.\n\nHe's watching Paw Patrol.");
+        }
 
     }
 
@@ -312,6 +337,15 @@ class Kitchen extends AdventureScene {
         fire3Label.setAlpha(0);
         fire3.on('pointerover', () => this.showAlpha(fire3Label));
 
+        if (this.hasItem('Extinguished Fires!')) {
+            fire1.x = 2000;
+            fire1.y = 2000;
+            fire2.x = 2000;
+            fire2.y = 2000;
+            fire3.x = 2000;
+            fire3.y = 2000;
+        }
+
         //front doors
         let doorLiv = this.add.image(350,1000, 'door');
         doorLiv.setScale(0.8);
@@ -336,8 +370,76 @@ class Kitchen extends AdventureScene {
         //scene connections
         doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
         doorHal.on('pointerdown', () => this.gotoScene('hallway'));
-        doorExi.on('pointerdown', () => this.gotoScene('exit'));
+        if (this.hasItem('Extinguished Fires!')) {
+            doorExi.on('pointerdown', () => this.gotoScene('exit'));
+        } else {
+            doorExi.on('pointerdown', () => this.showMessage("Thanks to the fire, that door is piping hot!\n\nPut the fire out, give it time to cool, and then maybe it'll be safe."));
+        }
 
+        //object interactions
+        fire1.on('pointerdown', () => {
+            if (this.hasItem('Got Extinguisher!')) {
+                this.tweens.add({
+                    targets: fire1,
+                    alpha: {from: 1, to: 0},
+                    scale: {from: 0.7, to: 0.01},
+                    duration: 1000
+                })
+                this.tweens.add({
+                    targets: fire1,
+                    delay: 1000,
+                    x: 2000,
+                    y: 2000,
+                    duration: 1
+                })
+                this.gainItem('Extinguished Fires!');
+            }
+        })
+
+        fire2.on('pointerdown', () => {
+            if (this.hasItem('Got Extinguisher!')) {
+                this.tweens.add({
+                    targets: fire2,
+                    alpha: {from: 1, to: 0},
+                    scale: {from: 0.7, to: 0.01},
+                    duration: 1000
+                })
+                this.tweens.add({
+                    targets: fire2,
+                    delay: 1000,
+                    x: 2000,
+                    y: 2000,
+                    duration: 1
+                })
+            }
+        })
+
+        fire3.on('pointerdown', () => {
+            if (this.hasItem('Got Extinguisher!')) {
+                this.tweens.add({
+                    targets: fire3,
+                    alpha: {from: 1, to: 0},
+                    scale: {from: 0.2, to: 0.01},
+                    duration: 1000
+                })
+                this.tweens.add({
+                    targets: fire3,
+                    delay: 1000,
+                    x: 2000,
+                    y: 2000,
+                    duration: 1
+                })
+            }
+        })
+
+        //area message
+        if (this.hasItem('Extinguished Fires!')) {
+            this.showMessage("You put out the fires.\n\nThe door to the exit should have cooled by now.\n\n(That heat sure dissipated quickly!)");
+        } else if (this.hasItem('Got Extinguisher!')) {
+            this.showMessage("No more running. It's time to fight fire.");
+        } else {
+            this.showMessage("The whole kitchen's ablaze! Get out of there, quickly!");
+        }
 
     }
 
@@ -385,6 +487,11 @@ class Bedroom extends AdventureScene {
         womanLabel.setAlpha(0);
         woman.on('pointerover', () => this.showAlpha(womanLabel));
 
+        if (this.hasItem('Rescued Woman!')) {
+            woman.x = 2000;
+            woman.y = 2000;
+        }
+
         let extinguisher = this.add.image(300,500,'extinguisher');
         extinguisher.setScale(0.3);
         extinguisher.setInteractive();
@@ -394,6 +501,11 @@ class Bedroom extends AdventureScene {
         extinguisherLabel.setInteractive();
         extinguisherLabel.setAlpha(0);
         extinguisher.on('pointerover', () => this.showAlpha(extinguisherLabel));
+
+        if(this.hasItem('Got Extinguisher!')) {
+            extinguisher.x = 2000;
+            extinguisher.y = 2000;
+        }
 
         let beam = this.add.image(900,0,'beam');
         beam.setAngle(120);
@@ -413,6 +525,52 @@ class Bedroom extends AdventureScene {
         doorHal.on('pointerdown', () => this.gotoScene('hallway'));
         doorBat.on('pointerdown', () => this.gotoScene('bathroom'));
 
+        //object interactions
+        extinguisher.on('pointerdown', () => {
+            this.tweens.add({
+                targets: extinguisher,
+                alpha: {from: 1, to: 0},
+                duration: 1000
+            });
+            this.tweens.add({
+                targets: extinguisher,
+                delay: 1000,
+                x: 2000,
+                y: 2000,
+                duration: 1
+            })
+            this.gainItem('Got Extinguisher!');
+        });
+
+        woman.on('pointerdown', () => {
+            if(this.hasItem('Got First Aid!')) {
+                this.tweens.add({
+                    targets: woman,
+                    alpha: {from: 1, to: 0},
+                    duration: 1000
+                });
+                this.tweens.add({
+                    targets: woman,
+                    delay: 1000,
+                    x: 2000,
+                    y: 2000,
+                    duration: 1
+                })
+                this.gainItem('Rescued Woman!');
+            } else {
+                this.showMessage("She's unconscious. It's not clear if that loose beam knocked her out or if she simply fell asleep.\n\nPerhaps some first aid could help.");
+            }
+            
+        });
+
+        //area message
+        if (this.hasItem('Rescued Woman!')) {
+            this.showMessage("You've saved everybody here.");
+        } else if (this.hasItem('Got First Aid!')) {
+            this.showMessage("These people came extremely prepared. There's an oxygen mask in that first aid kit.\n\nYou know what to do.");
+        } else {
+            this.showMessage("This is the bedroom. It looks like some of the ceiling caved in.");
+        }
         
         
     }
@@ -458,6 +616,11 @@ class Bathroom extends AdventureScene {
         lockLabel.setAlpha(0);
         lock.on('pointerover', () => this.showAlpha(lockLabel));
 
+        if (this.hasItem('Unlocked Door!')) {
+            lock.x = 2000;
+            lock.y = 2000;
+        }
+
         let toilet = this.add.image(800,500,'toilet');
         toilet.setScale(0.75);
 
@@ -470,6 +633,11 @@ class Bathroom extends AdventureScene {
         manLabel.setInteractive();
         manLabel.setAlpha(0);
         man.on('pointerover', () => this.showAlpha(manLabel));
+
+        if (this.hasItem('Rescued Man!')) {
+            man.x = 2000;
+            man.y = 2000;
+        }
 
         let stand = this.add.image(300,450,'stand');
         stand.setScale(0.75);
@@ -484,6 +652,11 @@ class Bathroom extends AdventureScene {
         firstAidLabel.setInteractive();
         firstAidLabel.setAlpha(0);
         firstAid.on('pointerover', () => this.showAlpha(firstAidLabel));
+
+        if (this.hasItem('Got First Aid!')) {
+            firstAid.x = 2000;
+            firstAid.y = 2000;
+        }
 
         let water = this.add.image(656,1000,'water');
         water.setScale(2);
@@ -503,10 +676,65 @@ class Bathroom extends AdventureScene {
         doorBed.on('pointerdown', () => this.gotoScene('bedroom'));
         doorHal.on('pointerdown', () => this.gotoScene('hallway'));
 
+        //object interactions
+        firstAid.on('pointerdown', () => {
+            this.gainItem('Got First Aid!');
+            this.tweens.add({
+                targets: firstAid,
+                alpha: {from: 1, to: 0},
+                duration: 1000
+            })
+            this.tweens.add({
+                targets: firstAid,
+                x: 2000,
+                y: 2000,
+                delay: 1000,
+                duration: 1
+            })
+        });
+
+        man.on('pointerdown', () => {
+            this.gainItem('Rescued Man!');
+            this.tweens.add({
+                targets: man,
+                alpha: {from: 1, to: 0},
+                duration: 1000
+            })
+            this.tweens.add({
+                targets: man,
+                x: 2000,
+                y: 2000,
+                delay: 1000,
+                duration: 1
+            })
+        });
+
+        lock.on('pointerdown', () => {
+            this.gainItem('Unlocked Door!');
+            this.tweens.add({
+                targets: lock,
+                alpha: {from: 1, to: 0},
+                y: 350,
+                duration: 1000
+            })
+            this.tweens.add({
+                targets: lock,
+                x: 2000,
+                y: 2000,
+                delay: 1000,
+                duration: 1
+            })
+        })
+
+        //area message
+        if (this.hasItem('Rescued Man!')) {
+            this.showMessage("You've saved everybody here.");
+        } else {
+            this.showMessage("The bathroom is flooded.\n\nAlthough based on this guy's rapid plunging, that may not be from structural damage.");
+        }
 
     }
 
-    
 }
 
 class Hallway extends AdventureScene {
@@ -530,7 +758,6 @@ class Hallway extends AdventureScene {
         let doorEnt = this.add.image(2000,2000,'door');
         doorEnt.setScale(0.8);
         doorEnt.setInteractive();
-        //TODO: if rubbleCleared = false (rubble is cleared), move to (700, 1000)
         let doorEntLabel = this.add.text(600, 650, "Entrance");
         doorEntLabel.setColor("black");
         doorEntLabel.setFontSize(this.s*2);
@@ -566,6 +793,10 @@ class Hallway extends AdventureScene {
         fire.setInteractive();
         //TODO: if fires = false (fires are put out), teleport fire offscreen
         //I move stuff offscreen instead of changing the alpha so it can't be pointed over.
+        if (this.hasItem('Extinguished Fires!')) {
+            fire.x = 2000;
+            fire.y = 2000;
+        }
 
         //doors: act 2
         let doorKit = this.add.image(300,250,'door');
@@ -592,9 +823,11 @@ class Hallway extends AdventureScene {
         let rubble = this.add.image(700,900,'rubble');
         rubble.setScale(0.9);
         rubble.setInteractive();
-        if (this.rubbleCleared == true) {
+        if (this.hasItem('Cleared Rubble!')) {
             rubble.x = 2000;
             rubble.y = 2000;
+            doorEnt.x = 700;
+            doorEnt.y = 1000;
         }
 
         //If clicked on, fade it out, then set rubble = false and fade in Entrance door
@@ -608,20 +841,29 @@ class Hallway extends AdventureScene {
         let lock = this.add.image(1025,300,'lock');
         lock.setScale(0.1);
         lock.setInteractive();
-        //TODO: if lock = false (clicked on in bathroom), teleport offscreen
+        if (this.hasItem('Unlocked Door!')) {
+            lock.x = 2000;
+            lock.y = 2000;
+        }
 
         let occupied = this.add.image(800,150,'occupied');
         occupied.setScale(0.4);
         occupied.setInteractive();
         occupied.setAlpha(0);
-        //TODO: put following under condition if manSaved = false
         doorBat.on('pointerdown', () => this.showAlpha(occupied));
+        if(this.hasItem('Rescued Man!')) {
+            occupied.x = 2000;
+            occupied.y = 2000;
+        }
 
         let bark = this.add.image(450,700,'bark');
         bark.setScale(0.5);
         bark.setInteractive();
         bark.setAlpha(0);
-        //TODO: put following under condition if dogSaved = false
+        if (this.hasItem('Rescued Dog!')) {
+            bark.x = 2000;
+            bark.y = 2000;
+        }
         this.time.addEvent({
             delay: 2000,
             loop: true,
@@ -634,16 +876,22 @@ class Hallway extends AdventureScene {
         dotDotDot.setScale(0.5);
         dotDotDot.setInteractive();
         dotDotDot.setAlpha(0);
-        //TODO: put following under condition if womanSaved = false
         doorBed.on('pointerover', () => this.showAlpha(dotDotDot));
+        if (this.hasItem('Rescued Woman!')) {
+            dotDotDot.x = 2000;
+            dotDotDot.y = 2000;
+        }
 
         //scene connections
         doorEnt.on('pointerdown', () => this.gotoScene('entrance'));
         doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
         doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
         doorBed.on('pointerdown', () => this.gotoScene('bedroom'));
-        doorBat.on('pointerdown', () => this.gotoScene('bathroom'));
-
+        if (lock.x < 2000) {
+            doorBat.on('pointerdown', () => this.showMessage('This door is locked from the inside.'));
+        } else {
+            doorBat.on('pointerdown', () => this.gotoScene('bathroom'));
+        }
         //object interactions
         rubble.on('pointerdown', () => {
             this.tweens.add({
@@ -659,8 +907,11 @@ class Hallway extends AdventureScene {
                 alpha: {from: 0, to: 1},
                 duration: 1000
             })
-            this.rubbleCleared = true;
+            this.gainItem('Cleared Rubble!');
         })
+
+        //area message
+        this.showMessage("This is the hallway.\n\nMost rooms can be accessed through here.");
     }   
 }
 
@@ -695,6 +946,7 @@ class Exit extends AdventureScene {
         cloud2.setScale(0.25);
 
         let flyer = this.add.image(800,300,'flyer');
+        flyer.setAlpha(0.1);
 
         //invisible rectangles
         let leftBlocker = this.add.rectangle(350,300,200,400,'0xe17b31');
@@ -714,14 +966,16 @@ class Exit extends AdventureScene {
         doorKitLabel.setAlpha(0);
         doorKit.on('pointerover', () => this.showAlpha(doorKitLabel));
 
-        //scene connections
+        //scene connections & area message
         doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
-        //TODO: put this in a conditional only if everyone is rescued
-        doorExi.on('pointerdown', () => this.scene.start('ending'));
-
-
-
-    }
+        if (this.hasItem('Rescued Dog!') && this.hasItem('Rescued Woman!') && this.hasItem('Rescued Man!')) {
+            doorExi.on('pointerdown', () => this.scene.start('ending'));
+            this.showMessage("Woman, man, dog ... you've done it, you've saved everybody.\n\nNow it's time to kick ass or walk outside, and I'm all out of ass... or something!");
+        } else {
+            this.showMessage("You can exit the house through this kitchen door.\n\nOnce you've rescued everyone, anyway.");
+            doorExi.on('pointerdown', () => this.showMessage("You can't leave yet! You haven't rescued everybody!\n\nDon't let anybody down!"));
+        }
+        }
 
     
 }
@@ -814,22 +1068,23 @@ class Ending extends Phaser.Scene {
         //variable declaration
         let ghostbusters = this.add.image(1000,1750,'ghostbusters');
         ghostbusters.setScale(2);
-        let button = this.add.image(950,2000,'button');
-        button.setScale(0.75);
+        /*let button = this.add.image(950,2000,'button');
+        button.setScale(0.75);*/
 
         //scrolling animations
         this.tweens.add({
             targets: ghostbusters,
-            y: -500,
-            duration: 15000
+            y: 550,
+            duration: 10000
         })
 
-        this.tweens.add({
+        /*this.tweens.add({
             targets: button,
             delay: 9000,
             y: 550,
             duration: 7500
-        })
+        })*/
+
     }
 
 }
@@ -841,6 +1096,6 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Entrance, LivingRoom, Hallway],
+    scene: [Intro, Entrance, LivingRoom, Kitchen, Bedroom, Bathroom, Hallway, Exit, Ending],
     title: "Adventure Game",
 });

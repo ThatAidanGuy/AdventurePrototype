@@ -1,13 +1,13 @@
 class AdventureScene extends Phaser.Scene {
 
-    init(data) { //I assume this is for global variables. I added all but the inventory.
+    init(data) { //I assumed this is for global variables. I added all but the inventory. Commented out because I couldn't get them to work.
         this.inventory = data.inventory || [];
-        this.manSaved = false;
+        /*this.manSaved = false;
         this.womanSaved = false;
         this.dogSaved = false;
         this.rubbleCleared = false;
         this.firesExtinguished = false;
-        this.doorUnlocked = false;
+        this.doorUnlocked = false;*/
     }
 
     constructor(key, name) {
@@ -33,12 +33,12 @@ class AdventureScene extends Phaser.Scene {
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
         
         this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
-            .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
+            .setStyle({ fontSize: `${1.5 * this.s}px`, color: '#eea' }) //Aidan changed font size to from 2 to 1.5
             .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
 
         this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.66)
             .setStyle({ fontSize: `${2 * this.s}px` })
-            .setText("Inventory")
+            .setText("Tasks Completed") //Aidan changed the "Inventory" to a list of completed tasks. Same thing in practice.
             .setAlpha(0);
 
         this.inventoryTexts = [];
@@ -61,13 +61,21 @@ class AdventureScene extends Phaser.Scene {
     }
 
     showMessage(message) {
+        //Aidan altered the duration of the alpha and added a second in order to keep words on screen more without making the fade-out overly gradual.
         this.messageBox.setText(message);
         this.tweens.add({
             targets: this.messageBox,
-            alpha: { from: 1, to: 0 },
+            alpha: { from: 1, to: 0.99 },
             easing: 'Quintic.in',
-            duration: 4 * this.transitionDuration
+            duration: 8 * this.transitionDuration
         });
+        this.tweens.add({
+            targets: this.messageBox,
+            delay: 8 * this.transitionDuration,
+            alpha: {from: 0.99, to: 0},
+            easing: 'Quintic.in',
+            duration: this.transitionDuration
+        })
     }
 
     //The following method was added by Aidan
@@ -103,10 +111,19 @@ class AdventureScene extends Phaser.Scene {
         let h = this.h * 0.66 + 3 * this.s;
         this.inventory.forEach((e, i) => {
             let text = this.add.text(this.w * 0.75 + 2 * this.s, h, e)
-                .setStyle({ fontSize: `${1.5 * this.s}px` })
+                .setStyle({ fontSize: `${1 * this.s}px` }) //Aidan shrunk font size from 1.5 to 1
                 .setWordWrapWidth(this.w * 0.75 + 4 * this.s);
             h += text.height + this.s;
             this.inventoryTexts.push(text);
+            //Aidan added this too: Remove old text from inventory
+            //Didn't work though so it's commented out
+            //I just shrunk text size and moved stuff around so it would never be enough to go offscreen
+            /*if (this.inventoryTexts.length() == 6) {
+                for(let i=5;i>=0;i--) {
+                    this.inventoryTexts.splice(i, 1, inventoryTexts[i-1])
+                }
+            }*/
+
         });
     }
 
@@ -157,17 +174,17 @@ class AdventureScene extends Phaser.Scene {
     }
 
     gotoScene(key) {
-        this.cameras.main.fade(this.transitionDuration / 2, 0, 0, 0);
-        this.time.delayedCall(this.transitionDuration / 2, () => {
+        this.cameras.main.fadeOut(this.transitionDuration / 5, 0, 0, 0);
+        this.time.delayedCall(this.transitionDuration / 5, () => {
             this.scene.start(key, {
                 inventory: this.inventory,
-                //Aidan added the rest of these variables
-                manSaved: this.manSaved,
+                //Aidan, who's getting tired of referring to himself in third-person, added the rest of these variables, but they didn't work so ignore them
+                /*manSaved: this.manSaved,
                 womanSaved: this.womanSaved,
                 dogSaved: this.dogSaved,
                 rubbleCleared: this.rubbleCleared,
                 firesExtinguished: this.firesExtinguished,
-                doorUnlocked: this.doorUnlocked
+                doorUnlocked: this.doorUnlocked*/
 
             });
         });
