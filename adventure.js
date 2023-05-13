@@ -1,7 +1,13 @@
 class AdventureScene extends Phaser.Scene {
 
-    init(data) {
+    init(data) { //I assume this is for global variables. I added all but the inventory.
         this.inventory = data.inventory || [];
+        this.manSaved = false;
+        this.womanSaved = false;
+        this.dogSaved = false;
+        this.rubbleCleared = false;
+        this.firesExtinguished = false;
+        this.doorUnlocked = false;
     }
 
     constructor(key, name) {
@@ -64,8 +70,17 @@ class AdventureScene extends Phaser.Scene {
         });
     }
 
-    //TODO: make ShowMessage variant for text appearing
-    //at certain coordinates when images are hovered over
+    //The following method was added by Aidan
+    //so text objects could appear when image objects were hovered over.
+    //Should work for image objects too, come to think of it.
+    showAlpha(textObj) {
+        this.tweens.add({
+            targets: textObj,
+            alpha: {from: 5, to: 0}, //alpha>1 means it stays full for longer because it takes longer to get from that number to 0
+            easing: 'Quintic.in',
+            duration: 1 * this.transitionDuration
+        })
+    }
 
     updateInventory() {
         if (this.inventory.length > 0) {
@@ -142,9 +157,19 @@ class AdventureScene extends Phaser.Scene {
     }
 
     gotoScene(key) {
-        this.cameras.main.fade(this.transitionDuration, 0, 0, 0);
-        this.time.delayedCall(this.transitionDuration, () => {
-            this.scene.start(key, { inventory: this.inventory });
+        this.cameras.main.fade(this.transitionDuration / 2, 0, 0, 0);
+        this.time.delayedCall(this.transitionDuration / 2, () => {
+            this.scene.start(key, {
+                inventory: this.inventory,
+                //Aidan added the rest of these variables
+                manSaved: this.manSaved,
+                womanSaved: this.womanSaved,
+                dogSaved: this.dogSaved,
+                rubbleCleared: this.rubbleCleared,
+                firesExtinguished: this.firesExtinguished,
+                doorUnlocked: this.doorUnlocked
+
+            });
         });
     }
 

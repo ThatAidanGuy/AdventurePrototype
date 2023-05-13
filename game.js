@@ -142,22 +142,43 @@ class Entrance extends AdventureScene {
     }
 
     onEnter() {
-        //TODO: Make text appear on pointerover
+        //The game messes up if I remove this comment so I'll keep it
         //variable declaration
         let doorLiv = this.add.image(350, 500, 'door');
         doorLiv.setScale(0.8);
         doorLiv.setInteractive();
-        //If I have time I'll change all the coordinates to be relative to port size. I'm leaving the following line in that format as an example.
-        let doorLivLabel = this.add.text(this.w*(10/192),this.h*(10/108), 'text');
+        let doorLivLabel = this.add.text(200,150, 'Living Room');
         doorLivLabel.setColor("black");
         doorLivLabel.setFontSize(this.s*2);
         doorLivLabel.setInteractive();
-        doorLiv.on('pointerover', () => this.showMessage("Living Room"));
+        doorLivLabel.setAlpha(0);
+        doorLiv.on('pointerover', () => this.showAlpha(doorLivLabel));
+
         let doorHal = this.add.image(1050, 500, 'door');
         doorHal.setScale(0.8);
-        let rubble = this.add.image(600,600,'rubble');
+        doorHal.setInteractive();
+        let doorHalLabel = this.add.text(900,150, 'Hallway');
+        doorHalLabel.setColor("black");
+        doorHalLabel.setFontSize(this.s*2);
+        doorHalLabel.setInteractive();
+        doorHalLabel.setAlpha(0);
+        doorHal.on('pointerover', () => this.showAlpha(doorHalLabel));
+
+        let rubble = this.add.image(1000,600,'rubble');
         rubble.setScale(0.9);
-        
+
+        if (this.rubbleCleared == true) {
+            rubble.x = 2000;
+            rubble.y = 2000;
+        }
+
+        //scene connections
+        doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
+        if (this.rubbleCleared == true) {
+            doorHal.on('pointerdown', () => this.gotoScene('hallway'));
+        } else {
+            doorHal.on('pointerdown', () => this.showMessage("The door to the hallway is blocked!\n\nGet to the other side and clear the rubble first."));
+        }        
     }
 
 
@@ -178,14 +199,54 @@ class LivingRoom extends AdventureScene {
         //variable declaration
         let doorKit = this.add.image(1200,200, 'door');
         doorKit.setScale(0.5);
+        doorKit.setInteractive();
+        let doorKitLabel = this.add.text(900, 100, 'Kitchen');
+        doorKitLabel.setColor("black");
+        doorKitLabel.setFontSize(this.s*2);
+        doorKitLabel.setInteractive();
+        doorKitLabel.setAlpha(0);
+        doorKit.on('pointerover', () => this.showAlpha(doorKitLabel));
+
         let doorEnt = this.add.image(350,1000, 'door');
         doorEnt.setScale(0.8);
+        doorEnt.setInteractive();
+        let doorEntLabel = this.add.text(200,650, 'Entrance');
+        doorEntLabel.setColor("black");
+        doorEntLabel.setFontSize(this.s*2);
+        doorEntLabel.setInteractive();
+        doorEntLabel.setAlpha(0);
+        doorEnt.on('pointerover', () => this.showAlpha(doorEntLabel));
+
+
         let doorHal = this.add.image(1050,1000, 'door');
         doorHal.setScale(0.8);
+        doorHal.setInteractive();
+        let doorHalLabel = this.add.text(1050, 650, "Hallway");
+        doorHalLabel.setColor("black");
+        doorHalLabel.setFontSize(this.s*2);
+        doorHalLabel.setInteractive();
+        doorHalLabel.setAlpha(0);
+        doorHal.on('pointerover', () => this.showAlpha(doorHalLabel));
+
+
         let tv = this.add.image(300,250, 'tv');
         tv.setScale(0.7);
+
         let dog = this.add.image(900,550, 'dog');
         dog.setScale(0.7);
+        dog.setInteractive();
+        let dogLabel = this.add.text(800, 350, 'Dog');
+        dogLabel.setColor("black");
+        dogLabel.setFontSize(this.s*2);
+        dogLabel.setInteractive();
+        dogLabel.setAlpha(0);
+        dog.on('pointerover', () => this.showAlpha(dogLabel));
+
+        //scene connections
+
+        doorEnt.on('pointerdown', () => this.gotoScene('entrance'));
+        doorHal.on('pointerdown', () => this.gotoScene('hallway'));
+        doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
 
     }
 
@@ -207,21 +268,77 @@ class Kitchen extends AdventureScene {
         //back door
         let doorExi = this.add.image(1200,200,'door');
         doorExi.setScale(0.5);
+        doorExi.setInteractive();
+        let doorExiLabel = this.add.text(950, 100, "Exit");
+        doorExiLabel.setColor("black");
+        doorExiLabel.setFontSize(this.s*2);
+        doorExiLabel.setInteractive();
+        doorExiLabel.setAlpha(0);
+        doorExi.on('pointerover', () => this.showAlpha(doorExiLabel));
+
+
         //stove
         let stove = this.add.image(600,350,'stove');
         stove.setScale(0.7);
+
         //fires
         let fire1 = this.add.image(1200,350, 'fire');
         fire1.setScale(0.7);
+        fire1.setInteractive();
+        let fire1Label = this.add.text(900, 300, "Fire!");
+        fire1Label.setColor("black");
+        fire1Label.setFontSize(this.s*2);
+        fire1Label.setInteractive();
+        fire1Label.setAlpha(0);
+        fire1.on('pointerover', () => this.showAlpha(fire1Label));
+
         let fire2 = this.add.image(550,550,'fire');
         fire2.setScale(0.7);
+        fire2.setInteractive();
+        let fire2Label = this.add.text(200, 500, "Fire!");
+        fire2Label.setColor("black");
+        fire2Label.setFontSize(this.s*2);
+        fire2Label.setInteractive();
+        fire2Label.setAlpha(0);
+        fire2.on('pointerover', () => this.showAlpha(fire2Label));
+
         let fire3 = this.add.image(580,265,'fire');
         fire3.setScale(0.2);
+        fire3.setInteractive();
+        let fire3Label = this.add.text(400, 250, "Fire!");
+        fire3Label.setColor("black");
+        fire3Label.setFontSize(this.s*1);
+        fire3Label.setInteractive();
+        fire3Label.setAlpha(0);
+        fire3.on('pointerover', () => this.showAlpha(fire3Label));
+
         //front doors
         let doorLiv = this.add.image(350,1000, 'door');
         doorLiv.setScale(0.8);
+        doorLiv.setInteractive();
+        let doorLivLabel = this.add.text(50, 650, "Living Room");
+        doorLivLabel.setColor("black");
+        doorLivLabel.setFontSize(this.s*2);
+        doorLivLabel.setInteractive();
+        doorLivLabel.setAlpha(0);
+        doorLiv.on('pointerover', () => this.showAlpha(doorLivLabel));
+
         let doorHal = this.add.image(1050,1000,'door');
         doorHal.setScale(0.8);
+        doorHal.setInteractive();
+        let doorHalLabel = this.add.text(950, 650, "Hallway");
+        doorHalLabel.setColor("black");
+        doorHalLabel.setFontSize(this.s*2);
+        doorHalLabel.setInteractive();
+        doorHalLabel.setAlpha(0);
+        doorHal.on('pointerover', () => this.showAlpha(doorHalLabel));
+
+        //scene connections
+        doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
+        doorHal.on('pointerdown', () => this.gotoScene('hallway'));
+        doorExi.on('pointerdown', () => this.gotoScene('exit'));
+
+
     }
 
 
@@ -245,20 +362,58 @@ class Bedroom extends AdventureScene {
         //back door
         let doorBat = this.add.image(1200,200,'door');
         doorBat.setScale(0.5);
+        doorBat.setInteractive();
+        let doorBatLabel = this.add.text(900, 150, "Bathroom");
+        doorBatLabel.setColor("black");
+        doorBatLabel.setFontSize(this.s*2);
+        doorBatLabel.setInteractive();
+        doorBatLabel.setAlpha(0);
+        doorBat.on('pointerover', () => this.showAlpha(doorBatLabel));
+
         let bed = this.add.image(600,400,'bed');
         bed.setScale(1.25);
         bed.flipX = true;
+
         let woman = this.add.image(750,375, 'woman');
         woman.setScale(0.75);
         woman.flipX = true;
+        woman.setInteractive();
+        let womanLabel = this.add.text(500, 150, "Woman");
+        womanLabel.setColor("black");
+        womanLabel.setFontSize(this.s*2);
+        womanLabel.setInteractive();
+        womanLabel.setAlpha(0);
+        woman.on('pointerover', () => this.showAlpha(womanLabel));
+
         let extinguisher = this.add.image(300,500,'extinguisher');
         extinguisher.setScale(0.3);
+        extinguisher.setInteractive();
+        let extinguisherLabel = this.add.text(170, 600, "Extinguisher");
+        extinguisherLabel.setColor("black");
+        extinguisherLabel.setFontSize(this.s*2);
+        extinguisherLabel.setInteractive();
+        extinguisherLabel.setAlpha(0);
+        extinguisher.on('pointerover', () => this.showAlpha(extinguisherLabel));
+
         let beam = this.add.image(900,0,'beam');
         beam.setAngle(120);
         beam.setScale(0.6);
         //front door
         let doorHal = this.add.image(700,1000,'door');
         doorHal.setScale(0.8);
+        doorHal.setInteractive();
+        let doorHalLabel = this.add.text(600, 650, "Hallway");
+        doorHalLabel.setColor("black");
+        doorHalLabel.setFontSize(this.s*2);
+        doorHalLabel.setInteractive();
+        doorHalLabel.setAlpha(0);
+        doorHal.on('pointerover', () => this.showAlpha(doorHalLabel));
+
+        //scene connections
+        doorHal.on('pointerdown', () => this.gotoScene('hallway'));
+        doorBat.on('pointerdown', () => this.gotoScene('bathroom'));
+
+        
         
     }
 
@@ -285,22 +440,69 @@ class Bathroom extends AdventureScene {
         //back door
         let doorHal = this.add.image(1200,200,'door');
         doorHal.setScale(0.5);
+        doorHal.setInteractive();
+        let doorHalLabel = this.add.text(900, 150, "Hallway");
+        doorHalLabel.setColor("black");
+        doorHalLabel.setFontSize(this.s*2);
+        doorHalLabel.setInteractive();
+        doorHalLabel.setAlpha(0);
+        doorHal.on('pointerover', () => this.showAlpha(doorHalLabel));
+
         let lock = this.add.image(1150,250,'lock');
         lock.setScale(0.1);
+        lock.setInteractive();
+        let lockLabel = this.add.text(975, 250, "Lock");
+        lockLabel.setColor("black");
+        lockLabel.setFontSize(this.s*2);
+        lockLabel.setInteractive();
+        lockLabel.setAlpha(0);
+        lock.on('pointerover', () => this.showAlpha(lockLabel));
+
         let toilet = this.add.image(800,500,'toilet');
         toilet.setScale(0.75);
+
         let man = this.add.image(600,390,'man');
         man.setScale(0.5);
+        man.setInteractive();
+        let manLabel = this.add.text(700, 200, "Man");
+        manLabel.setColor("black");
+        manLabel.setFontSize(this.s*2);
+        manLabel.setInteractive();
+        manLabel.setAlpha(0);
+        man.on('pointerover', () => this.showAlpha(manLabel));
+
         let stand = this.add.image(300,450,'stand');
         stand.setScale(0.75);
+
         let firstAid = this.add.image(300,300,'firstAid');
         firstAid.setScale(0.25);
         firstAid.setAngle(10);
+        firstAid.setInteractive();
+        let firstAidLabel = this.add.text(200, 150, "First Aid");
+        firstAidLabel.setColor("black");
+        firstAidLabel.setFontSize(this.s*2);
+        firstAidLabel.setInteractive();
+        firstAidLabel.setAlpha(0);
+        firstAid.on('pointerover', () => this.showAlpha(firstAidLabel));
+
         let water = this.add.image(656,1000,'water');
         water.setScale(2);
+
         //front door
         let doorBed = this.add.image(700,1000,'door');
         doorBed.setScale(0.8);
+        doorBed.setInteractive();
+        let doorBedLabel = this.add.text(350, 750, "Bedroom");
+        doorBedLabel.setColor("black");
+        doorBedLabel.setFontSize(this.s*2);
+        doorBedLabel.setInteractive();
+        doorBedLabel.setAlpha(0);
+        doorBed.on('pointerover', () => this.showAlpha(doorBedLabel));
+
+        //scene connections
+        doorBed.on('pointerdown', () => this.gotoScene('bedroom'));
+        doorHal.on('pointerdown', () => this.gotoScene('hallway'));
+
 
     }
 
@@ -325,35 +527,141 @@ class Hallway extends AdventureScene {
     onEnter() {
         //variable declaration
         //doors: act 1
-        let doorEnt = this.add.image(700,1000,'door');
+        let doorEnt = this.add.image(2000,2000,'door');
         doorEnt.setScale(0.8);
+        doorEnt.setInteractive();
+        //TODO: if rubbleCleared = false (rubble is cleared), move to (700, 1000)
+        let doorEntLabel = this.add.text(600, 650, "Entrance");
+        doorEntLabel.setColor("black");
+        doorEntLabel.setFontSize(this.s*2);
+        doorEntLabel.setInteractive();
+        doorEntLabel.setAlpha(0);
+        doorEnt.on('pointerover', () => this.showAlpha(doorEntLabel));
+
         let doorLiv = this.add.image(200,800,'door');
         doorLiv.setScale(0.75);
+        doorLiv.setInteractive();
+        let doorLivLabel = this.add.text(400, 550, "Living Room");
+        doorLivLabel.setColor("black");
+        doorLivLabel.setFontSize(this.s*2);
+        doorLivLabel.setInteractive();
+        doorLivLabel.setAlpha(0);
+        doorLiv.on('pointerover', () => this.showAlpha(doorLivLabel));
+
         let doorBed = this.add.image(1200,800,'door');
         doorBed.setScale(0.75);
+        doorBed.setInteractive();
+        let doorBedLabel = this.add.text(600, 600, "Bedroom");
+        doorBedLabel.setColor("black");
+        doorBedLabel.setFontSize(this.s*2);
+        doorBedLabel.setInteractive();
+        doorBedLabel.setAlpha(0);
+        //TODO: put this under condition if womanSaved = true
+        doorBed.on('pointerover', () => this.showAlpha(doorBedLabel));
+
         //door intermission: fire
         let fire = this.add.image(500,250,'fire');
         fire.setAngle(75);
         fire.setScale(0.5);
+        fire.setInteractive();
+        //TODO: if fires = false (fires are put out), teleport fire offscreen
+        //I move stuff offscreen instead of changing the alpha so it can't be pointed over.
+
         //doors: act 2
         let doorKit = this.add.image(300,250,'door');
         doorKit.setScale(0.65);
+        doorKit.setInteractive();
+        let doorKitLabel = this.add.text(450, 50, "Kitchen");
+        doorKitLabel.setColor("black");
+        doorKitLabel.setFontSize(this.s*2);
+        doorKitLabel.setInteractive();
+        doorKitLabel.setAlpha(0);
+        doorKit.on('pointerover', () => this.showAlpha(doorKitLabel));
+
         let doorBat = this.add.image(1100,250,'door');
         doorBat.setScale(0.65);
+        doorBat.setInteractive();
+        let doorBatLabel = this.add.text(750, 300, "Bathroom");
+        doorBatLabel.setColor("black");
+        doorBatLabel.setFontSize(this.s*2);
+        doorBatLabel.setInteractive();
+        doorBatLabel.setAlpha(0);
+        doorBat.on('pointerover', () => this.showAlpha(doorBatLabel));
+
         //other
         let rubble = this.add.image(700,900,'rubble');
         rubble.setScale(0.9);
+        rubble.setInteractive();
+        if (this.rubbleCleared == true) {
+            rubble.x = 2000;
+            rubble.y = 2000;
+        }
+
+        //If clicked on, fade it out, then set rubble = false and fade in Entrance door
+        let rubbleLabel = this.add.text(575, 700, "Clear Rubble");
+        rubbleLabel.setColor("black");
+        rubbleLabel.setFontSize(this.s*2);
+        rubbleLabel.setInteractive();
+        rubbleLabel.setAlpha(0);
+        rubble.on('pointerover', () => this.showAlpha(rubbleLabel));
+
         let lock = this.add.image(1025,300,'lock');
         lock.setScale(0.1);
+        lock.setInteractive();
+        //TODO: if lock = false (clicked on in bathroom), teleport offscreen
+
         let occupied = this.add.image(800,150,'occupied');
         occupied.setScale(0.4);
+        occupied.setInteractive();
+        occupied.setAlpha(0);
+        //TODO: put following under condition if manSaved = false
+        doorBat.on('pointerdown', () => this.showAlpha(occupied));
+
         let bark = this.add.image(450,700,'bark');
         bark.setScale(0.5);
+        bark.setInteractive();
+        bark.setAlpha(0);
+        //TODO: put following under condition if dogSaved = false
+        this.time.addEvent({
+            delay: 2000,
+            loop: true,
+            callback: () => {
+                this.showAlpha(bark);
+            }
+        })
+
         let dotDotDot = this.add.image(900,650,'dotDotDot');
         dotDotDot.setScale(0.5);
-    }
+        dotDotDot.setInteractive();
+        dotDotDot.setAlpha(0);
+        //TODO: put following under condition if womanSaved = false
+        doorBed.on('pointerover', () => this.showAlpha(dotDotDot));
 
-    
+        //scene connections
+        doorEnt.on('pointerdown', () => this.gotoScene('entrance'));
+        doorLiv.on('pointerdown', () => this.gotoScene('livingRoom'));
+        doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
+        doorBed.on('pointerdown', () => this.gotoScene('bedroom'));
+        doorBat.on('pointerdown', () => this.gotoScene('bathroom'));
+
+        //object interactions
+        rubble.on('pointerdown', () => {
+            this.tweens.add({
+                targets: rubble,
+                alpha: {from: 1, to: 0},
+                duration: 1000,
+                scale: {from: 0.9, to: 0.01}
+            })
+            this.tweens.add({
+                targets: doorEnt,
+                x: 700,
+                y: 1000,
+                alpha: {from: 0, to: 1},
+                duration: 1000
+            })
+            this.rubbleCleared = true;
+        })
+    }   
 }
 
 class Exit extends AdventureScene {
@@ -372,17 +680,47 @@ class Exit extends AdventureScene {
         //objects
         let doorExi = this.add.image(300,500,'door');
         doorExi.setScale(1.25);
+        doorExi.setInteractive();
+
         let sky = this.add.rectangle(700,498,500,852, '0x00aaff')
+
         let doorKit = this.add.image(1200,1000,'door');
         doorKit.setScale(0.75);
+        doorKit.setInteractive();
+
         let cloud1 = this.add.image(600,200,'cloud');
         cloud1.setScale(0.25);
+
         let cloud2 = this.add.image(800,400,'cloud');
         cloud2.setScale(0.25);
+
         let flyer = this.add.image(800,300,'flyer');
+
         //invisible rectangles
         let leftBlocker = this.add.rectangle(350,300,200,400,'0xe17b31');
         let rightBlocker = this.add.rectangle(1050,300,200,400,'0xf5f5de');
+
+        let doorExiLabel = this.add.text(1000, 200, "Exit");
+        doorExiLabel.setColor("black");
+        doorExiLabel.setFontSize(this.s*3);
+        doorExiLabel.setInteractive();
+        doorExiLabel.setAlpha(0);
+        doorExi.on('pointerover', () => this.showAlpha(doorExiLabel));
+
+        let doorKitLabel = this.add.text(1100, 650, "Kitchen");
+        doorKitLabel.setColor("black");
+        doorKitLabel.setFontSize(this.s*2);
+        doorKitLabel.setInteractive();
+        doorKitLabel.setAlpha(0);
+        doorKit.on('pointerover', () => this.showAlpha(doorKitLabel));
+
+        //scene connections
+        doorKit.on('pointerdown', () => this.gotoScene('kitchen'));
+        //TODO: put this in a conditional only if everyone is rescued
+        doorExi.on('pointerdown', () => this.scene.start('ending'));
+
+
+
     }
 
     
@@ -503,6 +841,6 @@ const game = new Phaser.Game({
         width: 1920,
         height: 1080
     },
-    scene: [Ending],
+    scene: [Entrance, LivingRoom, Hallway],
     title: "Adventure Game",
 });
