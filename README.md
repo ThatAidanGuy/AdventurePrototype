@@ -15,7 +15,7 @@ Experience requirements:
 - **Some objects are themselves animated**: The Intro and Ending scenes display various animations via tweens, and many objects with pointerdown effects have animations that go beyond the bare minimum for pointerdowns – even if it is usually a fade out.
 
 Asset sources:
-- The vast majority of assets are vector art made by me in Keynote.
+- The vast majority of assets are vector art made by me in Keynote. I don't think it's worth going into each individual one because they're all the same story: I made a bunch of shapes and lines, filled the shapes with colors, and placed them on top of each other as appropriate to make a drawing. I then took a screenshot of the drawing and used Lunapic to make the background transparent. I saved that png from Lunapic and put it in my assets folder here, rinse and repeat about 30 times.
 - The Paw Patrol image comes from [this New York Times article](https://www.nytimes.com/2020/06/10/arts/television/protests-fictional-cops.html).
 - The ending is from the infamous NES *Ghostbusters* game, originally designed by Activision in 1984 and ported to the NES by Bits Laboratory in 1986. I thought it would be funny for anyone who gets the reference – that's about as good as an ending as anything considering how small-scale and mundane this project is, right?
 
