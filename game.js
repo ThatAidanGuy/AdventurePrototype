@@ -1091,10 +1091,15 @@ class Ending extends Phaser.Scene {
 
 const game = new Phaser.Game({
     scale: {
-        mode: Phaser.Scale.FIT,
+//         mode: Phaser.Scale.FIT,
+//         autoCenter: Phaser.Scale.CENTER_BOTH,
+//         width: 1920,
+//         height: 1080,
+        
+        mode: Phaser.Scale.WIDTH_CONTROLS_HEIGHT,
+        width: sharedConfig.width,
+        height: sharedConfig.height, 
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1920,
-        height: 1080
     },
     scene: [Intro, Entrance, LivingRoom, Kitchen, Bedroom, Bathroom, Hallway, Exit, Ending],
     title: "Adventure Game",
